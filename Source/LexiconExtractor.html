@@ -1,0 +1,89 @@
+<html>
+
+<body>
+
+	<div id="divUi">
+
+		<h3>Lexicon Extractor</h3>
+		<p>Enter a passage of text, then click the button to pick out one instance of every unique word and sort the list alphabetically.</p>
+
+		<label>Text to Extract Lexicon From:</label>
+		<button onclick="buttonClearTextToExtractFrom_Clicked();">Clear</button>
+		<br />
+		<textarea id="textareaTextToExtractFrom" cols="80" rows="16">
+Enter a passage of text, then click the button to pick out one instance of every unique word and sort the list alphabetically.
+		</textarea>
+		<br />
+
+		<button onclick="buttonExtractLexicon_Clicked();">Extract Lexicon</button>
+		<br />
+
+		<label>Lexicon Extracted:</label>
+		<button onclick="buttonClearLexicon_Clicked();">Clear</button>
+		<br />
+		<textarea id="textareaLexiconExtracted" cols="80" rows="16"></textarea>
+
+	</div>
+
+	</div>
+
+<script type="text/javascript">
+
+// UI event handlers.
+
+function buttonClearLexicon_Clicked()
+{
+	var d = document;
+
+	var textareaLexiconExtracted =
+		d.getElementById("textareaLexiconExtracted");
+	textareaLexiconExtracted.value = "";
+}
+
+function buttonClearTextToExtractFrom_Clicked()
+{
+	var d = document;
+
+	var textareaTextToExtractFrom =
+		d.getElementById("textareaTextToExtractFrom");
+	textareaTextToExtractFrom.value = "";
+}
+
+function buttonExtractLexicon_Clicked()
+{
+	var d = document;
+
+	var textareaTextToExtractFrom =
+		d.getElementById("textareaTextToExtractFrom");
+	var textareaLexiconExtracted =
+		d.getElementById("textareaLexiconExtracted");
+
+	var textToExtractFrom = textareaTextToExtractFrom.value;
+
+	var charactersToRemoveAsString = ".,:;?!'"; // Todo: apostrophes vs. quotes.
+
+	for (var i = 0; i < charactersToRemoveAsString.length; i++)
+	{
+		var charToRemove = charactersToRemoveAsString[i];
+		textToExtractFrom =
+			textToExtractFrom.split(charToRemove).join("");
+	}
+
+	var regularExpressionToSplitBy = /[\s\t\n]+/;
+	var terms = textToExtractFrom.split(regularExpressionToSplitBy);
+
+	var termsDeduplicated = [...new Set(terms)];
+
+	var termsDeduplicatedAndSorted = termsDeduplicated.sort();
+
+	var newline = "\n";
+	var textTerms = termsDeduplicatedAndSorted.join(newline);
+
+	textareaLexiconExtracted.value = textTerms;
+}
+
+</script>
+
+</body>
+
+</html>
